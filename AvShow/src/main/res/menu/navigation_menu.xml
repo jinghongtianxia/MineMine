@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/icon_group"
+        android:checkableBehavior="single">
+        <item
+            android:title="首页"
+            android:id="@+id/homePage"
+            android:icon="@drawable/ic_account_balance_black_24dp"/>
+    </group>
+
+
+    <group
+        android:id="@+id/icon_group1"
+        android:checkableBehavior="single">
+
+        <item
+            android:title="新话题"
+            android:id="@+id/new_topic"
+            android:icon="@drawable/ic_chat_black_24dp"/>
+
+        <item
+            android:title="新发行"
+            android:id="@+id/new_issue"
+            android:icon="@drawable/ic_radio_black_24dp"/>
+
+        <item
+            android:title="新加入"
+            android:id="@+id/new_add"
+            android:icon="@drawable/ic_add_to_queue_black_24dp"/>
+
+        <item
+            android:title="最想要"
+            android:id="@+id/most_want"
+            android:icon="@drawable/ic_favorite_black_24dp"/>
+
+        <item
+            android:title="高评价"
+            android:id="@+id/high_evaluate"
+            android:icon="@drawable/ic_trending_up_black_24dp"/>
+    </group>
+
+    <group
+        android:id="@+id/icon_group2"
+        android:checkableBehavior="single">
+
+        <item
+            android:title="排行榜"
+            android:id="@+id/rank"
+            android:icon="@drawable/ic_format_list_numbered_black_24dp"/>
+
+        <item
+            android:title="名鑑"
+            android:id="@+id/actor_name"
+            android:icon="@drawable/ic_face_black_24dp"/>
+
+    </group>
+
+</menu>

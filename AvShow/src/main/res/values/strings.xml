@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Test</string>
+    <string name="home_page">首页</string>
+    <string name="most_wanted">最想要</string>
+</resources>
