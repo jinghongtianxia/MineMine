@@ -1,5 +1,6 @@
 package com.example.test.Adapter;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -21,6 +22,9 @@ import com.example.test.R;
 import com.example.test.WebParser.DetailPage;
 import com.example.test.WebParser.DetailParser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,10 +38,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
     private static final int TYPE_FOOT = 1;
     private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_HEADER=2;
     private static final int NOTHING = 3;
     private static String ITEM_TYPE;
     private Context context;
     private SourceData value = new SourceData();
+//    private String[] judge_first = {"新话题", "新发行", "新加入", "最想要", "高评价"};
 
     public static void itemType(String type) {
         ITEM_TYPE = type;
@@ -46,31 +52,45 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
     @Override
     public ContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        if (ITEM_TYPE.equals("首页")) {
-            return new ContentViewHolder(View.inflate(parent.getContext(), R.layout.content_cardview, null), TYPE_NORMAL);
-        } else if (!ITEM_TYPE.equals("首页")) {
+        context = parent.getContext().getApplicationContext();
+//        if (ITEM_TYPE.equals("首页")) {
+//            return new ContentViewHolder(View.inflate(parent.getContext(), R.layout.content_cardview, null), TYPE_NORMAL);
+//        } else if (!ITEM_TYPE.equals("首页")) {
+//            if (Arrays.asList(value.getJudge_first()).contains(ITEM_TYPE)) {
+//                if (viewType == TYPE_NORMAL) {
+//                    return new ContentViewHolder(View.inflate(parent.getContext(), R.layout.content_cardview, null), TYPE_NORMAL);
+//                } else if (viewType == TYPE_FOOT) {
+//                    return new ContentViewHolder(View.inflate(parent.getContext(), R.layout.footview_layout, null), TYPE_FOOT);
+//                }
+//            } else {
+//                if (viewType == TYPE_NORMAL) {
+//                    return new ContentViewHolder(View.inflate(parent.getContext(), R.layout.rank_item_view, null), TYPE_NORMAL);
+//                } else if (viewType == TYPE_FOOT) {
+//                    return new ContentViewHolder(View.inflate(parent.getContext(), R.layout.rank_item_view, null), TYPE_FOOT);
+//                }
+//            }
+//        }
+
             if (viewType == TYPE_NORMAL) {
                 return new ContentViewHolder(View.inflate(parent.getContext(), R.layout.content_cardview, null), TYPE_NORMAL);
-
             } else if (viewType == TYPE_FOOT) {
                 return new ContentViewHolder(View.inflate(parent.getContext(), R.layout.footview_layout, null), TYPE_FOOT);
             }
-        }
         return null;
     }
+
 
     @Override
     public void onBindViewHolder(final ContentViewHolder holder, final int position) {
         if (ITEM_TYPE.equals("首页")) {
-            Glide.with(context).load(value.getBitmapSource().get(position)).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.cardIv);
+            Glide.with(context).load(value.getBitmapSource().get(position)).placeholder(R.drawable.ic_autorenew_black_24dp).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.cardIv);
             holder.cardTitle.setText(value.getTitleSource().get(position));
             holder.cardId.setText(value.getIdSource().get(position));
         } else if (!ITEM_TYPE.equals("首页")) {
             if (position == value.getTitleSource().size()) {
                 holder.footView.setProgress(ProgressBar.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
             } else if (position <= value.getTitleSource().size()) {
-                Glide.with(context).load(value.getBitmapSource().get(position)).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.cardIv);
+                Glide.with(context).load(value.getBitmapSource().get(position)).placeholder(R.drawable.ic_autorenew_black_24dp).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.cardIv);
                 holder.cardTitle.setText(value.getTitleSource().get(position));
                 holder.cardId.setText(value.getIdSource().get(position));
             }
@@ -96,6 +116,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
                 return TYPE_FOOT;
             } else if (position < getItemCount() - 1) {
                 return TYPE_NORMAL;
+            }else if (position==getItemCount()){
+                return TYPE_HEADER;
             }
         }
         return NOTHING;
@@ -110,57 +132,73 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
         ContentViewHolder(View itemView, int type) {
             super(itemView);
-            if (ITEM_TYPE.equals("首页")) {
-                if (type == TYPE_FOOT) {
-                    footView = (ProgressBar) itemView.findViewById(R.id.footview);
-                } else {
-                    cardId = (TextView) itemView.findViewById(R.id.card_id);
-                    cardTitle = (TextView) itemView.findViewById(R.id.card_title);
-                    cardIv = (ImageView) itemView.findViewById(R.id.card_iv);
-                }
+            if (type == TYPE_FOOT) {
+                footView = (ProgressBar) itemView.findViewById(R.id.footview);
+            } else {
+                cardId = (TextView) itemView.findViewById(R.id.card_id);
+                cardTitle = (TextView) itemView.findViewById(R.id.card_title);
+                cardIv = (ImageView) itemView.findViewById(R.id.card_iv);
                 cardIv.setOnClickListener(this);
-            } else if (!ITEM_TYPE.equals("首页")) {
-                if (type == TYPE_FOOT) {
-                    footView = (ProgressBar) itemView.findViewById(R.id.footview);
-                } else if (type == TYPE_NORMAL) {
-                    cardId = (TextView) itemView.findViewById(R.id.card_id);
-                    cardTitle = (TextView) itemView.findViewById(R.id.card_title);
-                    cardIv = (ImageView) itemView.findViewById(R.id.card_iv);
-                    cardIv.setOnClickListener(this);
-                }
             }
+
+
+//            if (ITEM_TYPE.equals("首页")) {
+//                if (type == TYPE_FOOT) {
+//                    footView = (ProgressBar) itemView.findViewById(R.id.footview);
+//                } else {
+//                    cardId = (TextView) itemView.findViewById(R.id.card_id);
+//                    cardTitle = (TextView) itemView.findViewById(R.id.card_title);
+//                    cardIv = (ImageView) itemView.findViewById(R.id.card_iv);
+//                }
+//                cardIv.setOnClickListener(this);
+//            } else if (!ITEM_TYPE.equals("首页")) {
+//                if (type == TYPE_FOOT) {
+//                    footView = (ProgressBar) itemView.findViewById(R.id.footview);
+//                } else if (type == TYPE_NORMAL) {
+//                    cardId = (TextView) itemView.findViewById(R.id.card_id);
+//                    cardTitle = (TextView) itemView.findViewById(R.id.card_title);
+//                    cardIv = (ImageView) itemView.findViewById(R.id.card_iv);
+//                    cardIv.setOnClickListener(this);
+//                }
+//            }
         }
 
         @Override
         public void onClick(View v) {
             int layoutPosition = ContentViewHolder.this.getLayoutPosition();
             final String href = value.getUrlSource().get(layoutPosition);
-            DetailParser detailParser = new DetailParser();
-            detailParser.addHref(href);
-//            System.out.println("detailParser.addHref(href);");
-            Observable.create(detailParser).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
-                @Override
-                public void onSubscribe(Disposable d) {
+            Intent intent = new Intent(context, DetailPage.class);
+            intent.putExtra("href", href);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+//            DetailParser detailParser = new DetailParser();
+//            detailParser.addHref(href);
+            /*
 
-                }
-
-                @Override
-                public void onNext(String value) {
-                    Intent intent = new Intent(context, DetailPage.class);
-                    intent.putExtra("href", value);
-                    context.startActivity(intent);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            });
+             */
+//            Observable.create(detailParser).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
+//                @Override
+//                public void onSubscribe(Disposable d) {
+//
+//                }
+//
+//                @Override
+//                public void onNext(String value) {
+//                    Intent intent = new Intent(context, DetailPage.class);
+//                    intent.putExtra("href", value);
+//                    context.startActivity(intent);
+//                }
+//
+//                @Override
+//                public void onError(Throwable e) {
+//
+//                }
+//
+//                @Override
+//                public void onComplete() {
+//
+//                }
+//            });
         }
     }
 }

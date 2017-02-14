@@ -1,10 +1,7 @@
 package com.example.test;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -15,25 +12,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.test.Adapter.ContentAdapter;
 import com.example.test.Adapter.ContentItemDecoration;
 import com.example.test.Adapter.ContentOnScrollListener;
 import com.example.test.Data.SourceData;
 import com.example.test.Data.WebUrl;
-import com.example.test.WebParser.DetailParser;
 import com.example.test.WebParser.HomeIndex;
 import com.example.test.WebParser.Postfix;
-import com.squareup.haha.perflib.Instance;
-import com.squareup.leakcanary.LeakCanary;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -85,9 +72,9 @@ public class MainActivity extends AppCompatActivity implements Observer<String> 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        String key= "test";
+        String key = "test";
         Bundle bundle = new Bundle(ClassLoader.getSystemClassLoader());
-        outState.putBundle(key,bundle);
+        outState.putBundle(key, bundle);
     }
 
     @Override
@@ -96,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements Observer<String> 
     }
 
     public void initView() {
-        contentRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_content);
+        contentRecyclerView = (RecyclerView) findViewById(R.id.content_recyclerview);
         contentRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, OrientationHelper.VERTICAL, false));
         contentRecyclerView.addItemDecoration(new ContentItemDecoration());
         contentRecyclerView.addOnScrollListener(new ContentOnScrollListener());
@@ -161,6 +148,9 @@ public class MainActivity extends AppCompatActivity implements Observer<String> 
     }
 
 
+
+//    {"新话题","新发行","新加入","最想要","高评价","排行榜","名鑑"}
+
     /**
      * 抽屉点击事件判断
      *
@@ -197,6 +187,14 @@ public class MainActivity extends AppCompatActivity implements Observer<String> 
             case "高评价":
                 ContentAdapter.itemType(itemName);
                 indexPageProcess(itemName, WebUrl.getMostPraise());
+                break;
+            case "排行榜":
+                ContentAdapter.itemType(itemName);
+                indexPageProcess(itemName, WebUrl.getActorRank());
+                break;
+            case "名鑑":
+                ContentAdapter.itemType(itemName);
+                indexPageProcess(itemName, WebUrl.getActorList());
                 break;
         }
     }
@@ -260,8 +258,41 @@ public class MainActivity extends AppCompatActivity implements Observer<String> 
                 e.onNext(itemName);
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(MainActivity.this);
-    }
 
+//        Observable.create(new ObservableOnSubscribe<String>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<String> e) throws Exception {
+//                SourceData sourceData = new SourceData();
+//                sourceData.updateSourceData();
+//                Postfix postfix = new Retrofit.Builder().baseUrl(WebUrl.getHomePage()).build().create(Postfix.class);
+//                InputStream inputStream = postfix.getIndexContent(url, 0, 1).execute().body().byteStream();
+//                Element body = Jsoup.parse(inputStream, "utf-8", "").body();
+//
+//                //排名序号
+//                Elements h3 = body.getElementsByTag("h3");
+//                for (Element ele :
+//                        h3) {
+//                    sourceData.addId(ele.text());
+//                }
+//
+//                //详情页面
+//                Elements searchitem = body.getElementsByClass("searchitem");
+//                for (Element ele :
+//                        searchitem) {
+//                    sourceData.addUrl(ele.getElementsByTag("a").attr("href"));
+//                }
+//
+//                //名字及头像
+//                Elements select = body.select("img[src$=.jpg]");
+//                for (Element ele :
+//                        select) {
+//                    sourceData.addTitle(ele.attr("title"));
+//                    sourceData.addBitmap(ele.attr("src"));
+//                }
+//                e.onNext(itemName);
+//            }
+//        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(MainActivity.this);
+    }
 
     /**
      * 设置标题

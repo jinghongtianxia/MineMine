@@ -22,6 +22,7 @@ public class SourceData {
     private final static Vector<String> ID_SOURCE=new Vector<>();
     private static ArrayList<String> LEFT_MESSAGE =new ArrayList<>();
     private static ArrayList<String> RIGHT_MESSAGE =new ArrayList<>();
+    private final String[] judge_first = {"新话题", "新发行", "新加入", "最想要", "高评价"};
 
     public static SourceData getSourceData() {
         return sourceData;
@@ -103,4 +104,7 @@ public class SourceData {
         return URL_SOURCE;
     }
 
+    public String[] getJudge_first(){
+        return judge_first;
+    }
 }

@@ -41,20 +41,20 @@
             android:icon="@drawable/ic_trending_up_black_24dp"/>
     </group>
 
-    <group
-        android:id="@+id/icon_group2"
-        android:checkableBehavior="single">
+    <!--<group-->
+        <!--android:id="@+id/icon_group2"-->
+        <!--android:checkableBehavior="single">-->
 
-        <item
-            android:title="排行榜"
-            android:id="@+id/rank"
-            android:icon="@drawable/ic_format_list_numbered_black_24dp"/>
+        <!--<item-->
+            <!--android:title="排行榜"-->
+            <!--android:id="@+id/rank"-->
+            <!--android:icon="@drawable/ic_format_list_numbered_black_24dp"/>-->
 
-        <item
-            android:title="名鑑"
-            android:id="@+id/actor_name"
-            android:icon="@drawable/ic_face_black_24dp"/>
+        <!--<item-->
+            <!--android:title="名鑑"-->
+            <!--android:id="@+id/actor_name"-->
+            <!--android:icon="@drawable/ic_face_black_24dp"/>-->
 
-    </group>
+    <!--</group>-->
 
 </menu>

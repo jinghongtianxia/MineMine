@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.test">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <!--android:theme="@style/AppTheme"-->
 
@@ -16,8 +18,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/AppTheme"
-            android:name="com.example.test.WebParser.DetailPage">
+            android:name="com.example.test.WebParser.DetailPage"
+            android:launchMode="singleTask">
         </activity>
     </application>
 

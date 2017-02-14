@@ -19,4 +19,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_toEndOf="@+id/item_left"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:textSize="25sp"-->
+        <!--android:textStyle="italic"-->
+        <!--android:id="@+id/item_right"/>-->
+
 </RelativeLayout>
